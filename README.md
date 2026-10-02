@@ -2,7 +2,7 @@
 
 A small portfolio project for recording daily victories, built with a Laravel REST API and a Vue 3 frontend. Local development uses SQLite.
 
-The project is built one iteration per commit, following [PLAN.md](PLAN.md). The first iteration provides the application scaffolds and `GET /api/health`; wins, categories and the dashboard will follow in later iterations.
+The project is built one iteration per commit, following [PLAN.md](PLAN.md). It currently includes the application scaffolds, `GET /api/health`, and the wins/categories models, migrations and demo data. The CRUD API and dashboard will follow in later iterations.
 
 ## Structure
 
@@ -29,11 +29,13 @@ composer install
 cp .env.example .env
 php artisan key:generate
 touch database/database.sqlite
-php artisan migrate
+php artisan migrate --seed
 php artisan serve
 ```
 
 Laravel uses `DB_CONNECTION=sqlite` and defaults to `backend/database/database.sqlite`. The local `.env`, application key and database are excluded from Git. When restarting an existing installation, only `php artisan serve` is needed.
+
+Seeding creates seven categories and eight sample wins dated relative to the first seed run. Run `php artisan db:seed` from `backend/` to load them into an existing database; repeated runs preserve existing entries and do not duplicate the samples.
 
 In a second terminal, starting from the repository root:
 
