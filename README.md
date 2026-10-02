@@ -2,7 +2,7 @@
 
 A small portfolio project for recording daily victories, built with a Laravel REST API and a Vue 3 frontend. Local development uses SQLite.
 
-The project is built one iteration per commit, following [PLAN.md](PLAN.md). It currently includes the application scaffolds, `GET /api/health`, and the wins/categories models, migrations and demo data. The CRUD API and dashboard will follow in later iterations.
+The project is built one iteration per commit, following [PLAN.md](PLAN.md). It currently includes the application scaffolds, the wins/categories domain and demo data, and a REST API with CRUD, search and category filtering. Statistics and the Vue dashboard will follow in later iterations.
 
 ## Structure
 
@@ -54,6 +54,37 @@ curl -i http://localhost:8000/api/health
 ```
 
 Expected result: HTTP 200 with `{"status":"ok"}`.
+
+## API
+
+| Method | Endpoint | Result |
+| --- | --- | --- |
+| GET | `/api/health` | Health status |
+| GET | `/api/categories` | Category list |
+| GET | `/api/wins` | Wins, newest win date and then creation time first |
+| POST | `/api/wins` | Create a win, HTTP 201 |
+| GET | `/api/wins/{win}` | Read a win |
+| PUT | `/api/wins/{win}` | Update a win |
+| DELETE | `/api/wins/{win}` | Delete a win, HTTP 204 |
+
+Categories return a JSON array. Win responses use a `data` key and include the category's `id`, `name` and `slug`, with `win_date` formatted as `YYYY-MM-DD`.
+
+Create and update require `title` (at most 120 characters), an existing integer `category_id`, and a valid `win_date` in `YYYY-MM-DD` format. `description` is optional; send `null` to clear it when updating. Validation errors return JSON with HTTP 422; missing wins return JSON with HTTP 404.
+
+Search titles and descriptions and filter by category slug:
+
+```bash
+curl 'http://localhost:8000/api/wins?search=gym&category=health'
+```
+
+Example create request (use an ID from `/api/categories`):
+
+```bash
+curl -i -X POST http://localhost:8000/api/wins \
+  -H 'Content-Type: application/json' \
+  -H 'Accept: application/json' \
+  -d '{"title":"Finished an exercise","description":null,"category_id":4,"win_date":"2026-10-02"}'
+```
 
 ## Checks
 
