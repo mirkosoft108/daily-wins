@@ -20,7 +20,7 @@ body {
   margin: 0;
 }
 
-button, input, select {
+button, input, select, textarea {
   font: inherit;
 }
 
@@ -32,7 +32,7 @@ button, input, select {
   min-height: 44px;
 }
 
-button:disabled, select:disabled {
+button:disabled, select:disabled, input:disabled, textarea:disabled {
   cursor: not-allowed;
   opacity: 0.65;
 }
@@ -201,7 +201,7 @@ h2 {
   margin-bottom: 0.4rem;
 }
 
-input, select {
+input, select, textarea {
   width: 100%;
   min-width: 0;
   border: 1px solid #b8c8bd;
@@ -454,4 +454,168 @@ select {
     animation: none;
   }
 
+}
+
+.dashboard-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.dashboard-header .app-header {
+  margin-bottom: 0;
+}
+
+.primary-button, .danger-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  background: var(--accent);
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.primary-button:hover {
+  background: #20523e;
+}
+
+.danger-button {
+  background: #9a382c;
+}
+
+.danger-button:hover {
+  background: #7b2c23;
+}
+
+.danger-text {
+  color: #913729;
+}
+
+.win-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.success-feedback {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #c9ddce;
+  border-radius: 10px;
+  background: #eaf2ec;
+  font-size: 0.875rem;
+}
+
+.empty-add {
+  margin-top: 1rem;
+}
+
+.app-modal {
+  width: min(calc(100% - 2rem), 32rem);
+  max-height: calc(100dvh - 2rem);
+  margin: auto;
+  padding: 1.5rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: white;
+  color: inherit;
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+  box-shadow: 0 12px 48px rgb(0 0 0 / 15%);
+}
+
+.app-modal::backdrop {
+  background: rgb(20 38 28 / 45%);
+}
+
+.form-intro, .delete-description {
+  margin-top: 0.75rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.win-form fieldset {
+  display: grid;
+  gap: 1rem;
+  min-width: 0;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.form-field {
+  min-width: 0;
+}
+
+.form-field label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+textarea {
+  display: block;
+  resize: vertical;
+}
+
+.field-hint {
+  margin-top: 0.3rem;
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+
+.field-error, .form-error {
+  margin-top: 0.4rem;
+  color: #913729;
+  font-size: 0.8rem;
+}
+
+.form-error {
+  padding: 0.75rem;
+  margin-top: 1rem;
+  border: 1px solid #d8bba8;
+  border-radius: 8px;
+  background: #fffaf5;
+}
+
+[aria-invalid="true"] {
+  border-color: #913729;
+}
+
+.dialog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.dialog-actions .secondary-button {
+  margin-top: 0;
+}
+
+@media (max-width: 374px) {
+  .app-modal {
+    padding: 1rem;
+  }
+
+  .dialog-actions > button {
+    flex: 1 1 auto;
+  }
 }

@@ -14,7 +14,12 @@ export const useWinsStore = defineStore('wins', () => {
   const winsError = ref('')
   const categoriesError = ref('')
   const statsError = ref('')
+  const saving = ref(false)
+  const mutationErrors = ref({})
+  const mutationError = ref('')
+  const successMessage = ref('')
   let winsController = null
+  let statsRequest = 0
 
   function cancelWinsRequest() {
     winsController?.abort()
@@ -67,6 +72,7 @@ export const useWinsStore = defineStore('wins', () => {
   }
 
   async function fetchStats() {
+    const request = ++statsRequest
     statsLoading.value = true
     statsError.value = ''
 
@@ -76,11 +82,11 @@ export const useWinsStore = defineStore('wins', () => {
       if (!fields.every((key) => Number.isInteger(data[key]) && data[key] >= 0)) {
         throw new Error('Invalid statistics response')
       }
-      stats.value = data
+      if (request === statsRequest) stats.value = data
     } catch {
-      statsError.value = "Your progress couldn't be loaded. Please try again."
+      if (request === statsRequest) statsError.value = "Your progress couldn't be loaded. Please try again."
     } finally {
-      statsLoading.value = false
+      if (request === statsRequest) statsLoading.value = false
     }
   }
 
@@ -88,10 +94,54 @@ export const useWinsStore = defineStore('wins', () => {
     return Promise.all([fetchWins(), fetchCategories(), fetchStats()])
   }
 
+  function clearMutationFeedback() {
+    mutationErrors.value = {}
+    mutationError.value = ''
+    successMessage.value = ''
+  }
+
+  async function mutateWin(request, message) {
+    if (saving.value) return false
+    saving.value = true
+    clearMutationFeedback()
+
+    try {
+      await request()
+      successMessage.value = message
+      await Promise.all([fetchWins(), fetchStats()])
+      return true
+    } catch (error) {
+      if (error.response?.status === 422) {
+        mutationErrors.value = error.response.data.errors || {}
+        mutationError.value = 'Please check the highlighted fields.'
+      } else if (error.response?.status === 404) {
+        mutationError.value = 'This win no longer exists. Close this dialog and refresh the page.'
+      } else {
+        mutationError.value = "Your change couldn't be saved. Please try again."
+      }
+      return false
+    } finally {
+      saving.value = false
+    }
+  }
+
+  function saveWin(payload, id = null) {
+    return mutateWin(
+      () => id === null ? http.post('/wins', payload) : http.put(`/wins/${id}`, payload),
+      id === null ? 'Win added.' : 'Win updated.',
+    )
+  }
+
+  function deleteWin(id) {
+    return mutateWin(() => http.delete(`/wins/${id}`), 'Win deleted.')
+  }
+
   return {
     wins, categories, stats, search, category,
     winsLoading, categoriesLoading, statsLoading,
     winsError, categoriesError, statsError,
     fetchWins, fetchCategories, fetchStats, loadDashboard, cancelWinsRequest,
+    saving, mutationErrors, mutationError, successMessage,
+    clearMutationFeedback, saveWin, deleteWin,
   }
 })

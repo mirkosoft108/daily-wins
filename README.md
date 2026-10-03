@@ -2,7 +2,7 @@
 
 A small portfolio project for recording daily victories, built with a Laravel REST API and a Vue 3 frontend. Local development uses SQLite.
 
-The project is built one iteration per commit, following [PLAN.md](PLAN.md). It includes a Laravel REST API with CRUD, search, category filtering and statistics, plus a responsive Vue dashboard that displays real API data. Create, edit and delete controls in Vue will follow in the next iteration.
+The project is built one iteration per commit, following [PLAN.md](PLAN.md). It includes a Laravel REST API with CRUD, search, category filtering and statistics, plus a responsive Vue dashboard for creating, editing and deleting wins.
 
 ## Structure
 
@@ -52,11 +52,15 @@ Open the Vue application at <http://localhost:5173>.
 
 The dashboard loads wins, categories and statistics separately. Search is sent to the API after a short typing pause; changing category applies immediately. Statistics describe all wins and do not change when filtering the list. Loading, empty and error states include a way to retry failed requests.
 
+Use **Add Win** to record a title, optional description, category and date. **Edit** reuses the same form; **Delete** asks for confirmation. Forms show required-field feedback and Laravel validation errors, preserve input after failures, and disable controls while saving. Successful changes reload the current filtered list and global statistics, then show a success message. A new or edited win may be hidden by the active filters. Dialogs support keyboard navigation and Escape to cancel when idle.
+
 To check the dashboard manually:
 
 - Open it at 320, 375, 768 and desktop widths and check for horizontal scrolling.
 - Search for `gym`, choose `Health`, and clear the filters.
 - Search for a term with no matches to see the empty state.
+- Add a temporary win, edit its title/category/date, then cancel and confirm its deletion. Check the success messages and statistics after each change.
+- Submit a blank title or category to see validation. Stop Laravel while a form is open, submit it, and check that the input remains available to retry after restarting Laravel.
 - Use the browser's Network throttling to see loading states.
 - Stop Laravel to see the error state, restart it, and use **Try again**.
 
