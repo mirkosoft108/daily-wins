@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\StatsController;
 use App\Http\Controllers\WinController;
 use Illuminate\Support\Facades\Route;
 
@@ -9,6 +10,7 @@ Route::get('/health', function () {
 });
 
 Route::get('/categories', [CategoryController::class, 'index']);
+Route::get('/stats', StatsController::class);
 Route::get('/wins', [WinController::class, 'index']);
 Route::post('/wins', [WinController::class, 'store']);
 Route::get('/wins/{win}', [WinController::class, 'show']);

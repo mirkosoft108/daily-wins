@@ -2,7 +2,7 @@
 
 A small portfolio project for recording daily victories, built with a Laravel REST API and a Vue 3 frontend. Local development uses SQLite.
 
-The project is built one iteration per commit, following [PLAN.md](PLAN.md). It currently includes the application scaffolds, the wins/categories domain and demo data, and a REST API with CRUD, search and category filtering. Statistics and the Vue dashboard will follow in later iterations.
+The project is built one iteration per commit, following [PLAN.md](PLAN.md). It currently includes the application scaffolds, the wins/categories domain and demo data, and a REST API with CRUD, search, category filtering and dashboard statistics. The Vue dashboard will follow in the next iteration.
 
 ## Structure
 
@@ -61,6 +61,7 @@ Expected result: HTTP 200 with `{"status":"ok"}`.
 | --- | --- | --- |
 | GET | `/api/health` | Health status |
 | GET | `/api/categories` | Category list |
+| GET | `/api/stats` | Total wins, wins this week and current streak |
 | GET | `/api/wins` | Wins, newest win date and then creation time first |
 | POST | `/api/wins` | Create a win, HTTP 201 |
 | GET | `/api/wins/{win}` | Read a win |
@@ -68,6 +69,8 @@ Expected result: HTTP 200 with `{"status":"ok"}`.
 | DELETE | `/api/wins/{win}` | Delete a win, HTTP 204 |
 
 Categories return a JSON array. Win responses use a `data` key and include the category's `id`, `name` and `slug`, with `win_date` formatted as `YYYY-MM-DD`.
+
+`GET /api/stats` returns a JSON object with integer `total_wins`, `wins_this_week` and `current_streak` fields. The total counts all wins. This week counts `win_date` values from Monday through Sunday of the current calendar week. The streak counts distinct consecutive days ending today, or yesterday if today has no win; a missing day breaks the streak, and future dates do not extend it. Calendar boundaries use Laravel's application timezone, currently UTC.
 
 Create and update require `title` (at most 120 characters), an existing integer `category_id`, and a valid `win_date` in `YYYY-MM-DD` format. `description` is optional; send `null` to clear it when updating. Validation errors return JSON with HTTP 422; missing wins return JSON with HTTP 404.
 
