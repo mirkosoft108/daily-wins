@@ -132,6 +132,11 @@ onBeforeUnmount(() => {
     </section>
   </main>
 
+  <footer class="app-footer">
+    <p>Portfolio demo · Built with Laravel and Vue</p>
+    <a href="https://github.com/mirkosoft108/daily-wins">View source on GitHub</a>
+  </footer>
+
   <AppModal
     v-if="modalMode"
     :title="modalMode === 'delete' ? 'Delete this win?' : modalMode === 'edit' ? 'Edit your win' : 'Add a win'"

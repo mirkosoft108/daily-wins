@@ -47,8 +47,11 @@ h1, h2, h3, p, dl, dd {
 }
 
 
-.dashboard {
+.dashboard, .app-footer {
   width: min(calc(100% - 2rem), 64rem);
+}
+
+.dashboard {
   margin: 2rem auto 4rem;
 }
 .app-header {
@@ -272,6 +275,8 @@ select {
 }
 
 .win-card {
+  display: flex;
+  flex-direction: column;
   height: 100%;
   padding: 1.25rem;
   border: 1px solid var(--border);
@@ -435,8 +440,11 @@ select {
 
 }
 @media (min-width: 768px) {
-  .dashboard {
+  .dashboard, .app-footer {
     width: min(calc(100% - 4rem), 64rem);
+  }
+
+  .dashboard {
     margin-top: 3.5rem;
   }
 
@@ -504,7 +512,31 @@ select {
   flex-wrap: wrap;
   justify-content: flex-end;
   gap: 0.5rem;
-  margin-top: 0.75rem;
+  margin-top: auto;
+  padding-top: 0.75rem;
+}
+
+.app-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  margin: 0 auto 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.app-footer a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  border-radius: 4px;
+  color: var(--accent);
+  font-weight: 600;
+  text-underline-offset: 3px;
 }
 
 .success-feedback {
