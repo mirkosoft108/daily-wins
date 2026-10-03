@@ -309,6 +309,25 @@ You need GitHub, Neon, Render and Firebase accounts. Choose the free plans expli
 
 Each Neon branch has its own connection information. See [Neon's connection workflow](https://neon.com/docs/get-started-with-neon/workflow-primer). Keep the password and complete URI out of Git, screenshots and shared logs.
 
+#### Optional Neon CLI setup
+
+The root [neon.ts](neon.ts) defines a Postgres-only policy. The root npm packages support this configuration; the Laravel API and Vue frontend have their own dependencies.
+
+From the repository root, using your own Neon project ID:
+
+```bash
+npm ci
+npm install -g neon@latest
+neon login
+neon link --project-id YOUR_PROJECT_ID --branch production -y
+neon config plan
+neon deploy
+```
+
+The empty policy uses the project's existing PostgreSQL database. `neon deploy` applies Neon service configuration; Laravel migrations run when the backend starts on Render in step 3. The link context `.neon` and pulled `.env.local` are ignored by Git. This Laravel app reads **`DB_URL`**: copy the private `DATABASE_URL_UNPOOLED` from `.env.local` into Render's `DB_URL` for the direct connection.
+
+Agent skills installed with `neon skills -y` stay local and are also ignored. To configure MCP for Codex with access to your specific project, use `neon mcp -y --agent codex --project-id YOUR_PROJECT_ID`. See [Neon's CLI setup and config workflow](https://neon.com/blog/just-landed-in-the-neon-cli).
+
 ### 2. Create the Render backend
 
 Ensure the production preparation commit is pushed to `main`. In the [Render dashboard](https://dashboard.render.com), create a **Web Service**, connect GitHub, and select `mirkosoft108/daily-wins`.

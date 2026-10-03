@@ -7,6 +7,11 @@
 !.env.example
 !backend/.env.production.example
 auth.json
+.neon
+
+# Local agent skills installed by Neon CLI
+/.agents/skills/
+/skills-lock.json
 
 # Firebase local state
 .firebase/
