@@ -1,6 +1,7 @@
+<script setup>
+import DashboardView from './views/DashboardView.vue'
+</script>
+
 <template>
-  <main>
-    <h1>Daily Wins</h1>
-    <p>Small progress matters.</p>
-  </main>
+  <DashboardView />
 </template>
