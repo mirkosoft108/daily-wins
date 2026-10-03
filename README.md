@@ -4,7 +4,9 @@
 
 Built with a Laravel REST API and a Vue 3 dashboard. The app supports creating, editing, deleting, searching and filtering wins, with a few useful progress statistics.
 
-**Status:** the application works locally and includes production configuration for Neon, Render and Firebase Hosting. Follow the deployment guide below to publish it; verified live links and screenshots will be added afterward. This is a single-user portfolio demo with shared data and no authentication.
+**Live demo:** [Open Daily Wins](https://daily-wins-project.web.app) · [API health](https://daily-wins.onrender.com/api/health)
+
+The frontend runs on Firebase Hosting, the Laravel API on Render, and PostgreSQL on Neon. This is a single-user portfolio demo with shared data and no authentication. The free backend can take about a minute to wake after inactivity; if a request times out, wait and use **Try again**.
 
 ## Features
 
@@ -33,13 +35,13 @@ Categories: Career, Health, Social, Learning, Mindfulness, Personal and Other. W
 
 ## Screenshots
 
-Screenshots will be added after the public demo is deployed and verified.
+Captured from the public demo.
 
-| View | Screenshot status |
+![Desktop dashboard with progress statistics, search, category filters and wins](screenshots/dashboard-desktop.png)
+
+| Mobile dashboard | Create / edit form |
 | --- | --- |
-| Desktop dashboard | Pending |
-| Mobile dashboard | Pending |
-| Create / edit form | Pending |
+| ![Mobile dashboard](screenshots/dashboard-mobile.png) | ![Win form with title, description, category and date](screenshots/win-form.png) |
 
 ## Architecture
 
@@ -106,9 +108,9 @@ In the first terminal, starting from the repository root:
 
 ```bash
 cd backend
+cp .env.example .env
 composer install
 composer check-platform-reqs
-cp .env.example .env
 php artisan key:generate
 touch database/database.sqlite
 php artisan migrate --seed
@@ -480,6 +482,10 @@ firebase emulators:start --only hosting --project demo-daily-wins
 Open `http://localhost:5005` and a nested path such as `/preview/example`; both should serve the SPA. Port 5005 avoids macOS AirPlay's usual port 5000. To connect that local origin to your API, add `http://localhost:5005` to its `FRONTEND_ORIGINS` and restart it. The emulator does not publish anything.
 
 ### Deployment verification checklist
+
+Use this checklist when deploying your own instance. The public demo above was verified with browser CRUD, search and category filters, validation, statistics, SPA route refresh, exact CORS origins and keyboard navigation. Layouts were checked at 320, 375, 768 and 1280px, and loading was confirmed from a phone.
+
+Local installation was verified from a clean Git checkout: Composer/platform checks, a fresh SQLite migration/seed, 56 tests with 206 assertions, Pint and the Vite production build.
 
 - [ ] Render is live with `APP_ENV=production`, `APP_DEBUG=false`, PostgreSQL and `SEED_DEMO=false` after initialization.
 - [ ] `/api/health` returns 200; categories, wins and stats can read the Neon database.
