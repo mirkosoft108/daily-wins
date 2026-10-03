@@ -5,7 +5,12 @@
 .env
 .env.*
 !.env.example
+!backend/.env.production.example
 auth.json
+
+# Firebase local state
+.firebase/
+firebase-debug.log*
 
 # Dependencies and generated assets
 vendor/
